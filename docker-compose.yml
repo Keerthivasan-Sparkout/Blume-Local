@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: nest-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nestdb
+      POSTGRES_USER: nestjs
+      POSTGRES_PASSWORD: nestpass
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nestjs -d nestdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      target: development
+    container_name: nest-api
+    environment:
+      DATABASE_URL: "postgresql://nestjs:nestpass@postgres:5432/nestdb"
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: >
+      sh -c "npx prisma generate &&
+             npx prisma migrate deploy &&
+             npm run start:dev"
+
+volumes:
+  pgdata:
