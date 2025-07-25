@@ -1,5 +1,3 @@
-// src/common/utils/response.util.ts
-
 export class ResponseUtil {
   static success(message: string, data: any, statusCode = 200) {
     return {

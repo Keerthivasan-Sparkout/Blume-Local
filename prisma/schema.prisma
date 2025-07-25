@@ -36,7 +36,7 @@ model Userauth{
   sub String @unique()
   email String? @unique()
   mobile String? @unique()
-  emailToken Boolean @default(false)
-  appleToken Boolean @default(false)
-  authZero Boolean @default(false)
+  googleToken String? 
+  appleToken String?
+  
 }

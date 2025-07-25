@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Request,
+  UnauthorizedException,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -76,17 +77,20 @@ export class UserController {
 
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/valid')
+  @Post('/valid')
   async getProfile(@Request() req, @Body() users: any) {
+    console.log("dummy")
     await this.userService.signupWithAuth0(req.user)
-    return await this.userService.updateUser(users)
+    .catch(err => { throw new UnauthorizedException() })
+    const result = await this.userService.updateUser(users)
+    return ResponseUtil.success("Sigin successfully ",result)
 
   }
 
-  @Get('all-headers')
-  getAllHeaders(@Headers("authorization") headers: any) {
-    return { message: 'All Headers', headers };
+  @Get('all')
+  getAllHeaders() {
+    console.log("success")
+    return "success"
   }
-
 
 }
