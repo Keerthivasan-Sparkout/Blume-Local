@@ -20,7 +20,6 @@ import { JwtModule } from '@nestjs/jwt';
        AuthModules,
     PassportModule,
     UserModule,
-    MailModules,
  
   ],
   controllers: [AppController],

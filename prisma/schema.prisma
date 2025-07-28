@@ -14,19 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
 
-  id Int @id() @default(autoincrement())
-  firstName String
-  lastName String
-  email String @unique()
-  mobile String @unique()
-  password String
-  isVerified Boolean? @default(false)
-  mobileOtp Int?
-  emailOtp Int?
-  
-}
 
 model Userauth{
 
@@ -36,7 +24,124 @@ model Userauth{
   sub String @unique()
   email String? @unique()
   mobile String? @unique()
-  googleToken String? 
-  appleToken String?
+ 
   
 }
+
+enum ActivityLevel{
+  LOW
+  MODERATLY_ACTIVE
+}
+
+enum Gender{
+  MALE
+  FEMALE
+}
+
+enum Smoking{
+  YES
+  No
+}
+
+model User{
+
+  id Int @id() @default(autoincrement())
+  firstName String?
+  lastName String?
+  email String? @unique()
+  sub String @unique()
+  country String?
+  language String?
+  Communication Json?
+  mobile String @unique()
+  emailToken String? @unique()
+  googleToken String? @unique()
+  appleToken String? @unique()
+
+
+}
+
+model MedicalInfo{
+
+  id Int @id() @default(autoincrement())
+  activityLevel ActivityLevel
+  gender Gender
+  height String
+  goalHeight String
+  weight String
+  goalWeight String
+  smoking Smoking
+  surgical String?
+  algerge Json?
+  conditionName String
+  diagnosisDate DateTime
+  conditionStatus String
+  currentTreatement String
+  currentMedication Json?
+
+}
+
+model Program{
+
+  id Int @id() @default(autoincrement())
+  name String
+  description String
+  Photo String
+  totalDuration DateTime
+  passedDuration DateTime
+  startAt DateTime
+  RenewAt DateTime
+}
+
+model Payment{
+
+  id Int @id() @default(autoincrement())
+  mode String
+  bankName String
+  cardNumber String @unique()
+  CardHolder String
+  expriy DateTime
+  cvc Int
+  country String
+
+}
+
+model Invoice{
+
+  id Int @id() @default(autoincrement())
+  transactionId String @unique()
+  Paymentmode String
+  itemName String
+  quantity Int
+  price Int
+  subTotal Int
+  discount Int
+  coupon Int
+  tax Int
+  Total Int
+}
+
+model Services{
+
+  id Int @id() @default(autoincrement())
+  name String
+  description String?
+
+}
+
+model Product{
+
+  id Int @id() @default(autoincrement())
+  name String
+  description String
+}
+
+model Order{
+
+  id Int @id() @default(autoincrement())
+  items String[]
+  billingAddress String
+  deliveryAddress String
+  status String
+}
+
