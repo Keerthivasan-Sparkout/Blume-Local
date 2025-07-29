@@ -12,7 +12,7 @@ import { AuthModules } from '../auth/auth.module';
       secret: process.env.JWT_SECRET || 'secret123',
       signOptions: { expiresIn: '1d' },
     }),
-    PrismaModule,MailModules,AuthModules
+    PrismaModule,AuthModules
   ],
   controllers: [UserController],
   providers: [UserService],
