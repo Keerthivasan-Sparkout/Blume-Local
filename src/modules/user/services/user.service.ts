@@ -2,10 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { User } from '../entities/user.entity';
-import { UserCartDto } from '../dto/user.cart.update.dto';
-import { UserUpdateDto } from '../dto/upadate.user.dto';
-import { connect } from 'http2';
-
 
 
 @Injectable()
@@ -59,13 +55,13 @@ export class UserService {
 
   }
 
-  async updateUser(user:Prisma.UserUpdateInput,email:string){
+  async updateUser(user: Prisma.UserUpdateInput, email: string) {
     const getUser = await this.prisma.user.findUnique({ where: { email } })
     if (!getUser) {
       return "user not found"
     }
 
-    return await this.prisma.user.update({where:{id:getUser.id},data:user})
+    return await this.prisma.user.update({ where: { id: getUser.id }, data: user })
   }
 
   createAppleUser(user: any) {
@@ -112,7 +108,6 @@ export class UserService {
             id: getProduct.id
           }
         },
-        
       }
     });
   }
@@ -128,9 +123,15 @@ export class UserService {
     }
     getUser = user
     getProgram = program
+    let total = getProgram.totalDuration ?? 0;
+    (typeof total === 'number') ? total = total * 7 : total = 0
+    let renew = new Date()
+    renew.setDate(renew.getDate() + (total))
     return await this.prisma.userProgram.create({
-      data:{user:{connect:{id:getUser.id}},
-    program:{connect:{id:getProgram.id}}},include:{user:true,program:true}
+      data: {
+        user: { connect: { id: getUser.id } },
+        program: { connect: { id: getProgram.id } }, startAt: new Date(), renewAt: renew
+      }, include: { user: true, program: true }
     });
   }
 
@@ -154,33 +155,27 @@ export class UserService {
             id: getService.id
           }
         },
-        
+
       }
     });
   }
 
-  // async signupWithemail(user: any) {
+  async activeProgramByUser(email: string) {
+    const getUser = await this.prisma.user.findUnique({ where: { email } })
+    if (!getUser) {
+      return "user not found"
+    }
+    const allprogram = await this.prisma.userProgram.findMany({ where: { userId: getUser.id }, include: { user: true, program: true } })
+    let activeProgram = allprogram.filter(program => {
+      if (program.renewAt && program.startAt) {
+        const diff = program.renewAt.getTime() - program.startAt.getTime();
+        return diff > 0; 
+      }
+      return false; 
+    });
 
-  //   // const getUser = await this.prisma.userauth.findFirst({ where: { OR: [
-  //   //   { googleToken: accessKey.sub },
-  //   //   { appleToken: accessKey.sub }
-  //   // ] }})
-
-  //   const getUser = await this.prisma.userauth.findUnique({ where: { sub: user.sub } })
-  //   if (getUser) {
-  //     return getUser + "already exits"
-  //   }
-
-  //   let newUser: Prisma.UserauthCreateInput
-  //   if (user.email.endsWith('@gmail.com')) {
-  //     newUser=this.createGoogleUserA(user)
-  //   }
-  //   if (user.email.endsWith('@privaterelay.appleid.com') || user.email.endsWith('@appleid.com')) {
-  //     newUser=this.createAppleUser(user)
-  //   }
-
-  //   return await this.prisma.userauth.create
-  // }
+    return activeProgram
+  }
 
 
 }

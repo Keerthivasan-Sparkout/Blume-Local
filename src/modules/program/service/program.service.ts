@@ -36,5 +36,4 @@ export class ProgramService {
         return await this.prisma.program.delete({where:{name}})
     } 
 
-
 }

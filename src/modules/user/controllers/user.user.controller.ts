@@ -45,4 +45,10 @@ export class UserController {
   addProgramToCart(@Param('email') email:string,@Param('program') program:string){
       return this.userService.addProgramToUserCart(email,program)
   }
+
+  @Get("/activeprogram/:email")
+  async getActiveProgram(@Param('email') email:string){
+    const result = await this.userService.activeProgramByUser(email)
+    return ResponseUtil.success("Active Programs",result)
+  }
 }

@@ -29,6 +29,13 @@ enum Smoking{
   No
 }
 
+enum OrderStatus{
+  REQUEST
+  REVIWED
+  SHIPPED
+  DELEIVERED
+}
+
 model User{
 
   id Int @id() @default(autoincrement())
@@ -46,16 +53,19 @@ model User{
   servicesCart Services[]
   productCart Product[]
   userProgram UserProgram[]
+  task Task[]
+  order Order[]
   
 }
 
 model Task{
 
     id Int @id() @default(autoincrement())
+    user User @relation(fields:[userId],references:[id])
+    userId Int 
     type String 
     description String
-    imageUrl String
-
+    imageUrl String?
 }
 
 model Program{
@@ -64,10 +74,7 @@ model Program{
   name String @unique()
   description String
   Photo String
-  totalDuration String
-  passedDuration String
-  startAt String
-  RenewAt String
+  totalDuration Int @default(0)
   userProgram UserProgram[]
 }
 
@@ -99,6 +106,17 @@ model UserProgram{
 
   @@id([userId,ProgramID])
 
+}
+
+model Order{
+
+  id Int @id() @default(autoincrement())
+  items String[]
+  billingAddress String
+  deliveryAddress String
+  status OrderStatus
+  user User @relation(fields:[userId],references:[id])
+  userId Int 
 }
 
 model MedicalInfo{
@@ -148,12 +166,4 @@ model Invoice{
   Total Int
 }
 
-model Order{
-
-  id Int @id() @default(autoincrement())
-  items String[]
-  billingAddress String
-  deliveryAddress String
-  status String
-}
 

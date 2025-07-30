@@ -12,6 +12,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ProductModule } from './modules/product/product.module';
 import { ProgramModule } from './modules/program/program.module';
 import { ServicesModule } from './modules/services/services.module';
+import { TaskModule } from './modules/task/task.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -25,7 +27,9 @@ import { ServicesModule } from './modules/services/services.module';
     ProgramModule,
     ServicesModule,
     PassportModule,
+    TaskModule,
     UserModule,
+    OrderModule,
 
   ],
   controllers: [AppController],
