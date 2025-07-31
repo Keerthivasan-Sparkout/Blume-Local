@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { User } from '../entities/user.entity';
+import { UserUpdateDto } from '../dto/upadate.user.dto';
 
 
 @Injectable()
@@ -55,13 +56,20 @@ export class UserService {
 
   }
 
-  async updateUser(user: Prisma.UserUpdateInput, email: string) {
-    const getUser = await this.prisma.user.findUnique({ where: { email } })
+  async getProfile(sub:string){
+    return await this.prisma.user.findUnique({where:{sub}})
+  }
+
+  async updateUser(user:UserUpdateDto, sub: string) {
+    const getUser = await this.prisma.user.findUnique({ where: { sub } })
     if (!getUser) {
       return "user not found"
     }
-
-    return await this.prisma.user.update({ where: { id: getUser.id }, data: user })
+    getUser.fullName=user.fullName
+    getUser.gender=user.gender
+    getUser.DoB=user.DoB
+    getUser.mobile=user.mobile.toString()
+    return await this.prisma.user.update({ where: { id: getUser.id }, data: getUser })
   }
 
   createAppleUser(user: any) {
@@ -88,6 +96,15 @@ export class UserService {
     }
   }
 
+  async changeEmail(sub:string,email:string){
+    const getUser = await this.prisma.user.findUnique({ where: { sub } })
+    if (!getUser) {
+      return "user not found"
+    }
+    getUser.email=email
+    return await this.prisma.user.update({where:{id:getUser.id},data:getUser})
+  }
+
   async addProductToUserCart(email, name) {
     let getUser: User
     let getProduct: Prisma.ProductWhereUniqueInput
@@ -112,10 +129,10 @@ export class UserService {
     });
   }
 
-  async addProgramToUserCart(email, name) {
+  async addProgramToUserCart(sub, name) {
     let getUser: User
     let getProgram: Prisma.ProgramWhereUniqueInput
-    const [user, program] = await Promise.all([this.prisma.user.findUnique({ where: { email } }),
+    const [user, program] = await Promise.all([this.prisma.user.findUnique({ where: { sub } }),
     this.prisma.program.findUnique({ where: { name } })
     ])
     if (!user || !program) {
@@ -160,8 +177,8 @@ export class UserService {
     });
   }
 
-  async activeProgramByUser(email: string) {
-    const getUser = await this.prisma.user.findUnique({ where: { email } })
+  async activeProgramByUser(sub: string) {
+    const getUser = await this.prisma.user.findUnique({ where: { sub } })
     if (!getUser) {
       return "user not found"
     }
@@ -176,6 +193,14 @@ export class UserService {
 
     return activeProgram
   }
+
+  async updateContract(contract:string,sub:string){
+    const getUser=await this.prisma.user.findUnique({where:{sub}})
+     if (!getUser) {
+      return "user not found"
+    }
+  }
+
 
 
 }

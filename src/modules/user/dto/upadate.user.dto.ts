@@ -1,42 +1,23 @@
 // dto/signup.dto.ts
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UserUpdateDto{
 
     @IsString()
-    @IsOptional()
-    firstName: string
+    @IsNotEmpty()
+    fullName: string
 
     @IsString()
-    @IsOptional()
-    lastName: string 
+    @IsNotEmpty()
+    gender: string 
 
     @IsEmail()
     @IsNotEmpty()
-    email: string
+    DoB: string
 
     @IsString()
-    @IsOptional()
-    country: string
-
-    @IsString()
-    @IsOptional()
-    language: string 
-
-    @IsString()
-    @IsOptional()
-    mobile: string 
-
-    @IsString()
-    @IsOptional()
-    emailToken: string 
-
-    @IsString()
-    @IsOptional()
-    googleToken: string 
-
-    @IsString()
-    @IsOptional()
-    appleToken: string 
+    @IsNotEmpty()
+    @MaxLength(10)
+    mobile:number
 
 }

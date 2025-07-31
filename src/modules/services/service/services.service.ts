@@ -16,7 +16,11 @@ export class ServicesService{
     }
 
     async getServices(name:string){
-        await this.prisma.services.findUnique({where:{name}})
+       return await this.prisma.services.findUnique({where:{name}})
+    }
+
+    async getAllServices(){
+       return await this.prisma.services.findMany()
     }
 
     async updateService(data:Prisma.ServicesUpdateInput,name:string){

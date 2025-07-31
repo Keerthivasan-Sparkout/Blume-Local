@@ -8,6 +8,12 @@ export class ServicesController {
 
     constructor(private servicesService: ServicesService) { }
 
+    @Get()
+    async getAllServices() {
+        const result = await this.servicesService.getAllServices()
+        return ResponseUtil.success("Fetch All Service successfully ", result)
+    }
+
     @Post()
     createServices(@Body() data: CreateServiceDto) {
         const result = this.servicesService.createServices(data)
@@ -19,6 +25,8 @@ export class ServicesController {
         const result = this.servicesService.getServices(name)
         return ResponseUtil.success("Fetch Service successfully ", result)
     }
+
+    
 
     @Patch()
     updateServices(@Body() data: CreateServiceDto) {

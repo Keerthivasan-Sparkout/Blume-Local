@@ -15,12 +15,13 @@ export class OrderServices {
         return await this.prisma.order.create({data:{...order,user:{connect:{id:getUser.id}}}})
     }
 
-    async fetchAllOrderByUser(email:string){
-        const getUser = await this.prisma.user.findUnique({ where: { email } })
+    async fetchAllOrderByUser(sub:string){
+        const getUser = await this.prisma.user.findUnique({ where: { sub } })
         if (!getUser) {
             throw new UnauthorizedException("user not found")
         }
-        return await this.prisma.order.findMany({where:{userId:getUser.id}})
+        const result = await this.prisma.order.findMany({where:{userId:getUser.id}})
+        return result?result:null;
     }
 
     async updateOrderStatus(orderId:number,currentStatus){

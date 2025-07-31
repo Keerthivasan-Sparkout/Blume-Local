@@ -19,8 +19,8 @@ export class TaskServices{
         return await this.prisma.task.create({data:{...task,user:{connect:{id:getUser.id}}}})
     }
 
-    async getTaskAllTask(email:string){
-        const getUser=await this.prisma.user.findUnique({where:{email},include:{task:true}})
+    async getTaskAllTask(sub:string){
+        const getUser=await this.prisma.user.findUnique({where:{sub},include:{task:true}})
          if(!getUser){
             throw new UnauthorizedException("user not found")
         }

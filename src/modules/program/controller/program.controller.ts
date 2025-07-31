@@ -13,6 +13,12 @@ export class ProgramController{
         return ResponseUtil.success("Program Created successfully ",result)
     }
 
+    @Get()
+    async getAllPrograms(){
+        const result=await this.programServices.getAllPrograms()
+        return ResponseUtil.success("Fetch Program successfully ",result)
+    }
+
     @Get("/:name")
     getPrograms(@Param('name') name:string){
         const result=this.programServices.getPrograms(name)

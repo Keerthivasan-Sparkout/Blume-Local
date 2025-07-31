@@ -8,6 +8,10 @@ export class ProgramService {
 
     constructor(private prisma: PrismaService) { }
 
+    async getAllPrograms() {
+        return await this.prisma.program.findMany()
+    }
+
     async createPrograms(data: Prisma.ProgramCreateInput) {
         const getProgram = await this.prisma.program.findUnique({ where: { name: data.name } })
         if (getProgram) {
