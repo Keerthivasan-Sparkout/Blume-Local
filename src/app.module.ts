@@ -13,6 +13,7 @@ import { ServicesModule } from './modules/services/services.module';
 import { TaskModule } from './modules/task/task.module';
 import { OrderModule } from './modules/order/order.module';
 import { AddressModule } from './modules/address/address.module';
+import { MedicalInfoModule } from './modules/MedicalInfo/medicalinfo.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { AddressModule } from './modules/address/address.module';
     TaskModule,
     UserModule,
     OrderModule,
-    AddressModule
+    AddressModule,
+    MedicalInfoModule
 
   ],
   controllers: [AppController],

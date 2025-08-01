@@ -16,64 +16,66 @@ enum Smoking {
 }
 
 
-export class CreateMedicalInfoDto {
+export class UpdateMedicalInfoDto {
+    
 
-    @IsEnum(ActivityLevel)
-    @IsNotEmpty()
-    activityLevel: ActivityLevel
-
-    @IsEnum(Gender)
-    @IsNotEmpty()
-    gender: Gender
-
-    @IsString()
-    @IsNotEmpty()
-    height: string
-
-    @IsString()
-    @IsNotEmpty()
-    goalHeight: string
-
-    @IsString()
-    @IsNotEmpty()
-    weight: string
-
-    @IsString()
-    @IsNotEmpty()
-    goalWeight: string
-
-    @IsEnum(Smoking)
-    @IsNotEmpty()
-    smoking: Smoking
-
-    @IsString()
+    
+        @IsEnum(ActivityLevel)
     @IsOptional()
-    surgical: string
+    activityLevel: ActivityLevel | null
 
-    @IsObject()
+        @IsEnum(Gender)
     @IsOptional()
-    algerge: { name: string, description: string }
+    gender: Gender | null
 
-    @IsString()
-    @IsNotEmpty()
-    conditionName: string
-
-    @IsDate()
-    @IsNotEmpty()
-    diagnosisDate: Date
-
-    @IsString()
-    @IsNotEmpty()
-    conditionStatus: string
-
-    @IsString()
-    @IsNotEmpty()
-    currentTreatement: string
-
-    @IsObject()
+        @IsString()
     @IsOptional()
-    currentMedication: { name: string, description: string }
+        height:string | null
 
+        @IsString()
+    @IsOptional()
+        goalHeight: string | null
+
+        @IsString()
+    @IsOptional()
+        weight: string | null
+
+        @IsString()
+    @IsOptional()
+        goalWeight?:string | null
+
+        @IsEnum(Smoking)
+    @IsOptional()
+    smoking: Smoking |null
+
+        @IsString()
+    @IsOptional()
+        surgical?:string | null
+
+        @IsString()
+    @IsOptional()
+        conditionName?: string | null
+
+        @IsString()
+    @IsOptional()
+        diagnosisDate?:  Date | string | null
+
+        @IsString()
+    @IsOptional()
+        conditionStatus?: string | null
+
+        @IsString()
+    @IsOptional()
+        currentTreatement?: string | null
+
+
+ @IsObject()
+    @IsOptional()
+    algerge: {id?:number, name: string, description: string }[]
+
+       @IsObject()
+    @IsOptional()
+    currentMedication: {id?:number, name: string, description: string }[]
    
 
 }

@@ -152,19 +152,19 @@ model Address{
 model MedicalInfo{
 
   id Int @id() @default(autoincrement())
-  activityLevel ActivityLevel
-  gender Gender
-  height String
-  goalHeight String
-  weight String
-  goalWeight String
-  smoking Smoking
+  activityLevel ActivityLevel?
+  gender Gender?
+  height String?
+  goalHeight String?
+  weight String?
+  goalWeight String?
+  smoking Smoking?
   surgical String?
+  conditionName String?
+  diagnosisDate DateTime?
+  conditionStatus String?
+  currentTreatement String?
   algerge Json?
-  conditionName String
-  diagnosisDate DateTime
-  conditionStatus String
-  currentTreatement String
   currentMedication Json?
   user User @relation(fields:[userId],references:[id])
   userId Int @unique()

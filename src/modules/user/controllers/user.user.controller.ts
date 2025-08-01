@@ -14,6 +14,7 @@ import { ResponseUtil } from 'src/common/utils/response.utils';
 import { AuthGuard } from '@nestjs/passport';
 import { UserUpdateDto } from '../dto/upadate.user.dto';
 import { createAddressDto } from '../dto/create.address.dto';
+import { Prisma } from '@prisma/client';
 
 
 @Controller('user')
@@ -36,9 +37,15 @@ export class UserController {
 
   @Post('/valid')
   async signup(@Request() req, @Body() users: any) {
-    await this.userService.signupWithAuth0(req.user)
+    console.log("strart")
+   let Check
+    Check=await this.userService.signupWithAuth0(req.user)
     .catch(err => { throw new UnauthorizedException() })
-    const result = await this.userService.updateUserWithId(users)
+    if(Check.isCheck==='exited'){
+      console.log("new")
+      return Check.data
+    }
+    const result = await this.userService.updateUserWithId(users).catch(err => { throw new UnauthorizedException() })
     return ResponseUtil.success("Sigin successfully ",result)
   }
 

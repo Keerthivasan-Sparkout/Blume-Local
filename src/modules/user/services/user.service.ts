@@ -15,7 +15,7 @@ export class UserService {
     const getUser = await this.prisma.user.findUnique({ where: { sub: accessKey.sub } })
 
     if (getUser) {
-      return getUser
+      return {isCheck:'exited',data:getUser}
     }
 
     let newUser: Prisma.UserCreateInput
@@ -36,7 +36,8 @@ export class UserService {
         emailToken: accessKey.sub
       }
     }
-    await this.prisma.user.create({ data: newUser })
+    const result=await this.prisma.user.create({ data: newUser })
+    return {isCheck:'new',data:result}
   }
 
   async updateUserWithId(user: any) {
@@ -52,8 +53,10 @@ export class UserService {
     else { // if (user.sub.startsWith('google-oauth2')) {
       update_User = this.createGoogleUser(user)
     }
-    return await this.prisma.user.update({ where: { sub: user.sub }, data: update_User })
-
+    const result = await this.prisma.user.update({ where: { sub: user.sub }, data: update_User }).catch(err=>{throw new Error()})
+    await this.prisma.medicalInfo.create({data:{user:{connect:{id:getUser.id}}}})
+    console.log("finish")
+    return result
   }
 
   async getProfile(sub:string){
