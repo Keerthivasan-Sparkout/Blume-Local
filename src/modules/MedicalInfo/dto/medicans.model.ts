@@ -2,7 +2,7 @@ import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString } 
 
 
 
-export class AllergeModel{
+export class MedicanModel{
     
 
     @IsNumber()

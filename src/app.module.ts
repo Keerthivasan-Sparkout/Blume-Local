@@ -14,6 +14,7 @@ import { TaskModule } from './modules/task/task.module';
 import { OrderModule } from './modules/order/order.module';
 import { AddressModule } from './modules/address/address.module';
 import { MedicalInfoModule } from './modules/MedicalInfo/medicalinfo.module';
+import { AllergesModule } from './modules/allerges/allerges.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { MedicalInfoModule } from './modules/MedicalInfo/medicalinfo.module';
     UserModule,
     OrderModule,
     AddressModule,
-    MedicalInfoModule
+    MedicalInfoModule,
+    AllergesModule
 
   ],
   controllers: [AppController],

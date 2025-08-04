@@ -157,7 +157,7 @@ model MedicalInfo{
   conditionStatus String?
   currentTreatement String?
   currentMedication Json?
-  allerges Allerges[]
+  allerges Allerges?
   user User @relation(fields:[userId],references:[id])
   userId Int @unique()
 

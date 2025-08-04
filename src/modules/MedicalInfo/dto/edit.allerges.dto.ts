@@ -2,7 +2,7 @@ import { IsNumber, IsNotEmpty, IsString } from "class-validator"
 
 
 
-export class EditAllergeModel{
+export class EditMedicanModel{
     
 
     @IsNumber()
