@@ -197,13 +197,22 @@ export class UserService {
     return activeProgram
   }
 
-  async updateContract(contract:string,sub:string){
-    const getUser=await this.prisma.user.findUnique({where:{sub}})
-     if (!getUser) {
+  async completedProgram(sub:string){
+     const getUser = await this.prisma.user.findUnique({ where: { sub } })
+    if (!getUser) {
       return "user not found"
     }
-  }
+    const allprogram = await this.prisma.userProgram.findMany({ where: { userId: getUser.id }, include: { user: true, program: true } })
+    let completedProgram = allprogram.filter(program => {
+      if (program.renewAt && program.startAt) {
+        const diff = program.renewAt.getTime() - program.startAt.getTime();
+        return diff <= 0; 
+      }
+      return false; 
+    });
 
+    return completedProgram
+  }
 
 
 }

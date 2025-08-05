@@ -10,14 +10,14 @@ export class AddressController {
     constructor(private addressService: AdddressServices) { }
 
 
-    @Post("/add")
+    @Post()
     async addAddressToUser(@Request() req, @Body() address: any) {
         const result = await this.addressService.addAddressToUser(address, req.user.sub)
         return ResponseUtil.success("Address will added successfully",result)
 
     }
 
-    @Get("/getaddress/:type")
+    @Get("/:type")
     async fetchAddress(@Request() req,@Param('type') type:string){
          const result =await this.addressService.fetchAddress(type,req.user.sub)
          return ResponseUtil.success("Address fetched Successfully",result)
