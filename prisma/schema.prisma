@@ -69,7 +69,9 @@ model User{
   task Task[]
   order Order[]
   address Address[]
-  medicalInfo MedicalInfo?
+  allerges Allerges?
+  medicalCondition MedicalCondition?
+  currentMedication CurrentMedication?
   
 }
 
@@ -149,20 +151,6 @@ model Address{
   default Boolean
 }
 
-model MedicalInfo{
-
-  id Int @id() @default(autoincrement())
-  conditionName String?
-  diagnosisDate DateTime?
-  conditionStatus String?
-  currentTreatement String?
-  currentMedication Json?
-  allerges Allerges?
-  user User @relation(fields:[userId],references:[id])
-  userId Int @unique()
-
-}
-
 model Allerges{
     id Int @id() @default(autoincrement())
     peanutAllerge Json?
@@ -170,8 +158,32 @@ model Allerges{
     pollenAllerge Json?
     petDanderAllerge Json?
     soyAllerge Json?
-    medicalInfo MedicalInfo @relation(fields:[medicalInfoId],references:[id])
-    medicalInfoId Int @unique()
+    user User @relation(fields:[userId],references:[id])
+    userId Int @unique()
+}
+
+model MedicalCondition{
+
+  id Int @id() @default(autoincrement())
+  diabetes Json?
+  hypertension Json?
+  asthma Json?
+  thyroidDisorder Json?
+  heartDisease Json?
+  user User @relation(fields:[userId],references:[id])
+  userId Int @unique()
+
+}
+
+model CurrentMedication{
+  id Int @id() @default(autoincrement())
+  metformin Json?
+  atorvastalin Json?
+  lisinopril Json?
+  albuterolInhaler Json?
+  levothyroxine Json?
+  user User @relation(fields:[userId],references:[id])
+  userId Int @unique()
 }
 
 model Payment{
@@ -200,5 +212,6 @@ model Invoice{
   tax Int
   Total Int
 }
+
 
 

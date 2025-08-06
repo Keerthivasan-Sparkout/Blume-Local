@@ -13,8 +13,9 @@ import { ServicesModule } from './modules/services/services.module';
 import { TaskModule } from './modules/task/task.module';
 import { OrderModule } from './modules/order/order.module';
 import { AddressModule } from './modules/address/address.module';
-import { MedicalInfoModule } from './modules/MedicalInfo/medicalinfo.module';
 import { AllergesModule } from './modules/allerges/allerges.module';
+import { MedicalConditionModule } from './modules/medicalCondition/medicalCondition.module';
+import { CurrentMedicanModule } from './modules/currentMedican/currentMedican.module';
 
 @Module({
   imports: [
@@ -24,16 +25,17 @@ import { AllergesModule } from './modules/allerges/allerges.module';
     }),
     PrismaModule,
     AuthModules,
+    UserModule,
     ProductModule,
     ProgramModule,
     ServicesModule,
     PassportModule,
     TaskModule,
-    UserModule,
     OrderModule,
     AddressModule,
-    MedicalInfoModule,
-    AllergesModule
+    AllergesModule,
+    MedicalConditionModule,
+    CurrentMedicanModule
 
   ],
   controllers: [AppController],

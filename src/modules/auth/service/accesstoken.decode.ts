@@ -22,8 +22,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any) {
+    console.log("yes")
     if(!payload){
-      throw new UnauthorizedException()
+      console.log("noo")
+      throw new UnauthorizedException("Invalid Crendential")
     }
     return payload;
   }

@@ -54,7 +54,6 @@ export class UserService {
       update_User = this.createGoogleUser(user)
     }
     const result = await this.prisma.user.update({ where: { sub: user.sub }, data: update_User }).catch(err=>{throw new Error()})
-    await this.prisma.medicalInfo.create({data:{user:{connect:{id:getUser.id}}}})
     console.log("finish")
     return result
   }

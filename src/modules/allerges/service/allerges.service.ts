@@ -10,25 +10,20 @@ export class AllergesService {
     constructor(private prisma: PrismaService) { }
 
     async createAllerges(sub: string, allerge: CreateAllergesDto) {
-        const getUser = await this.prisma.user.findUnique({ where: { sub:"apple|001869.d6b0112f00d44146af0f33b32a9abae8.0857" } })
+        const getUser = await this.prisma.user.findUnique({ where: { sub } })
         if (!getUser) {
             return "no"
         }
-        const getMedical = await this.prisma.medicalInfo.findUnique({ where: { userId: getUser.id } })
-        if (!getMedical) {
-            return ""
-        }
-        let isCreated=false
+        let isExited=false
         let getAllerge
-        getAllerge=await this.prisma.allerges.findUnique({where:{medicalInfoId:getMedical.id}})
-        getAllerge?isCreated=true:false;
-        if(!getAllerge && getUser && getMedical){
-           getAllerge= await this.prisma.allerges.create({ data:{medicalInfo:{connect:{id:getMedical.id}}} })
-            .then(obj=>{isCreated=true})
+        getAllerge=await this.prisma.allerges.findUnique({where:{userId:getUser.id}})
+        getAllerge?isExited=true:false;
+        if(!getAllerge && getUser){
+           getAllerge= await this.prisma.allerges.create({ data:{user:{connect:{id:getUser.id}}} })
+            .then(obj=>{isExited=true})
         }
 
-        
-        if(isCreated ){
+        if(isExited ){
             switch(allerge.id){
             case 1:
              return await this.prisma.allerges.update({where:{id:getAllerge.id},data:{peanutAllerge:{description:allerge.description,reactions:allerge.reactions,status:allerge.status,severity:allerge.severity}}})
@@ -59,24 +54,19 @@ export class AllergesService {
         if (!getUser) {
             return ""
         }
-        const getMedical = await this.prisma.medicalInfo.findUnique({ where: { userId: getUser.id } })
-        if (!getMedical) {
+        const getAllerge = await this.prisma.allerges.findUnique({ where: { userId: getUser.id } })
+        if (!getAllerge) {
             return ""
         }
-        return await this.prisma.allerges.findUnique({where:{medicalInfoId:getMedical.id}})
+        return getAllerge
     }
 
     async deleteAllerges(sub:string,allerge:CreateAllergesDto){
          const getUser = await this.prisma.user.findUnique({ where: {sub} })
         if (!getUser) {
             return ""
-        }
-        const getMedical = await this.prisma.medicalInfo.findUnique({ where: { userId: getUser.id } })
-        if (!getMedical) {
-            return ""
-        }
-        
-        const getAllerge=await this.prisma.allerges.findUnique({where:{medicalInfoId:getMedical.id}})
+        }        
+        const getAllerge=await this.prisma.allerges.findUnique({where:{userId:getUser.id}})
         if(!getAllerge){
             return ""
         }
@@ -100,7 +90,6 @@ export class AllergesService {
 
              default:
                 throw new UnauthorizedException("Choice Valid Allerge")
-
         }
 
     }

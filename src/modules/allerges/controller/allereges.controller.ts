@@ -1,18 +1,29 @@
-import { Body, Controller, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from "@nestjs/common";
 import { AllergesService } from "../service/allerges.service";
+import { ResponseUtil } from "src/common/utils/response.utils";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/allerges")
+@UseGuards(AuthGuard('jwt'))
 export class AllergesController{
 
     constructor(private allergesServices:AllergesService){}
 
-    @Post('/:sub')
-    createAllerges(@Body() data:any, @Param('sub') sub:string){
-        return this.allergesServices.createAllerges(sub,data)
+    @Post()
+    async createAllerges(@Body() data:any, @Request() req){
+        const result=await this.allergesServices.createAllerges(req.user.sub,data)
+        return ResponseUtil.success("Allerge as updated",result)
     }
 
-    @Patch('/:sub')
-    deleteAllerges(@Body() data:any, @Param('sub') sub:string){
-        return this.allergesServices.deleteAllerges(sub,data)
+    @Get()
+    async getAllerges(@Request() req){
+        const result= await this.allergesServices.readAllerges(req.user.sub)
+        return ResponseUtil.success("Allerges",result)
+    }
+
+    @Patch()
+    async deleteAllerges(@Body() data:any,@Request() req){
+        const result =await this.allergesServices.deleteAllerges(req.user.sub,data)
+        return ResponseUtil.success("Allereg has deleted",result)
     }
 }
